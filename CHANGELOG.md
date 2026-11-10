@@ -1,5 +1,10 @@
 # Changelog
 
+## 20261110-1535
+
+- Added exact FP32 handling for the Q2 weight-stationary integer half-lanes on pre-sm_53 CUDA targets, retaining newer devices' PTX.
+- Checked those production helpers in the bounded Maxwell arithmetic test.
+
 ## 20261110-1528
 
 - Aligned the experimental runtime capability floor with its existing sm_52 build support while retaining the normal release floor.
