@@ -18,5 +18,6 @@ export function assertPrivate(path) {
   assert.equal(entries.length, 1, `ACL is not owner-only: it does not hold exactly one entry: ${sddl}`);
   const [type, rights, inherited, sid] = entries[0];
   assert.equal(`${type}/${inherited}/${sid}`, `Allow/False/${currentUserSid()}`, `ACL is not owner-only: ${sddl}`);
-  assert.deepEqual(rights.split(', ').sort(), ['FullControl', 'Synchronize'], `ACL is not the owner's full control: ${sddl}`);
+  const rightsSet = new Set(rights.split(', '));
+  assert.ok(rightsSet.has('FullControl') && [...rightsSet].every(r => r === 'FullControl' || r === 'Synchronize'), `ACL is not the owner's full control: ${sddl}`);
 }
