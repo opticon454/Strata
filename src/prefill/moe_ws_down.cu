@@ -10,6 +10,7 @@
 #include "mmq.cuh"
 
 #include "moe_ws.cuh"
+#include "strata/prefill/Convert-WsHalf2.cuh"
 
 #include <cstdio>
 #include <cstdlib>
@@ -38,16 +39,6 @@ constexpr int NT = 128, ROWB = 180, NSTEP = DN_K / 128, QB = 144, PIECES = DN_RO
 __device__ __forceinline__ uint32_t prmt(const uint32_t a, const uint32_t b, const uint32_t s) {
     uint32_t d;
     asm("prmt.b32 %0, %1, %2, %3;" : "=r"(d) : "r"(a), "r"(b), "r"(s));
-    return d;
-}
-__device__ __forceinline__ uint32_t hfma2(const uint32_t a, const uint32_t b, const uint32_t c) {
-    uint32_t d;
-    asm("fma.rn.f16x2 %0, %1, %2, %3;" : "=r"(d) : "r"(a), "r"(b), "r"(c));
-    return d;
-}
-__device__ __forceinline__ uint32_t hadd2(const uint32_t a, const uint32_t b) {
-    uint32_t d;
-    asm("add.rn.f16x2 %0, %1, %2;" : "=r"(d) : "r"(a), "r"(b));
     return d;
 }
 // the two fp16 lanes of h converted exactly to f32 and added
