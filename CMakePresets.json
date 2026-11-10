@@ -79,7 +79,7 @@
       "name": "cuda-maxwell",
       "configurePreset": "cuda-maxwell",
       "output": { "outputOnFailure": true },
-      "filter": { "include": { "name": "^maxwell_math_parity$" } },
+      "filter": { "include": { "name": "^(maxwell_math_parity|cuda_device_selftest)$" } },
       "execution": { "timeout": 30, "noTestsAction": "error", "jobs": 1 }
     },
     {
