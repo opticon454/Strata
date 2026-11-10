@@ -8,6 +8,8 @@
 #include "strata/kernels/dp4a.hpp"
 #include "strata/prefill/Convert-WsHalf2.cuh"
 
+namespace q20 = strata::prefill::ws::detail::q20_half_lanes;
+
 struct Input { int32_t a, b, c; float x, y, z; };
 struct Output { int32_t dot; float half_lo, half_hi, fused, ws_fma_lo, ws_fma_hi, ws_add_lo, ws_add_hi; };
 
@@ -19,10 +21,9 @@ __global__ void Check_Arithmetic(const Input* input, Output* output, size_t coun
     const half2 b = __floats2half2_rn(v.y, v.y);
     const half2 c = __floats2half2_rn(v.z, -v.z);
     const float2 h = __half22float2(__hadd2(__hmul2(a, b), c));
-    namespace q20 = strata::prefill::ws::detail::q20;
-    const uint32_t ab = __builtin_bit_cast(uint32_t, a), bb = __builtin_bit_cast(uint32_t, b), cb = __builtin_bit_cast(uint32_t, c);
-    const float2 wf = __half22float2(__builtin_bit_cast(__half2, q20::hfma2(ab, bb, cb)));
-    const float2 wa = __half22float2(__builtin_bit_cast(__half2, q20::hadd2(ab, cb)));
+    const uint32_t ab = q20::Pack_Half2(a), bb = q20::Pack_Half2(b), cb = q20::Pack_Half2(c);
+    const float2 wf = __half22float2(q20::Unpack_Half2(q20::hfma2(ab, bb, cb)));
+    const float2 wa = __half22float2(q20::Unpack_Half2(q20::hadd2(ab, cb)));
     output[i] = {STRATA_DP4A(v.a, v.b, v.c), h.x, h.y, fmaf(v.x, v.y, v.z), wf.x, wf.y, wa.x, wa.y};
 }
 

@@ -34,6 +34,8 @@ void ck(cudaError_t e, const char* what) {
 // summing 8 products of magnitude <= 256 - integers <= 2048, exact - added in fp32: the float MMQ's I2F(sumi) gives.
 // Epilogue as MMQ's sm_60 SASS: per 32-value block FMUL.FTZ (dx * dy), FFMA.FTZ (prod, sum, acc), blocks in K order.
 namespace q20 {
+using q20_half_lanes::hfma2;
+using q20_half_lanes::hadd2;
 constexpr int NT = 128, ROWB = 180, NSTEP = DN_K / 128, QB = 144, PIECES = DN_ROWS / NT;
 
 __device__ __forceinline__ uint32_t prmt(const uint32_t a, const uint32_t b, const uint32_t s) {
