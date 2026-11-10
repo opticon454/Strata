@@ -21,7 +21,6 @@ if(process.platform==='win32'){
   const raw=env[seen[0]];
   for(const k of seen)delete env[k];
   if(raw)env.PSModulePath=raw.split(';').filter(p=>p&&!ps7(p)).join(';');
-  console.error(`[host-test][#4] psmodulepath keys at start: ${JSON.stringify(seen)}; passed to the tests: ${JSON.stringify(env.PSModulePath)}`);
 }
 /* A test that never finishes fails after STRATA_TEST_TIMEOUT_MS (default 10 minutes) instead of holding the whole run for ever; extra arguments (a reporter, --test-name-pattern) go to node --test. */
 const timeout=Number(process.env.STRATA_TEST_TIMEOUT_MS)||600000;
