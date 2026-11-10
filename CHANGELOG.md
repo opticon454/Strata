@@ -1,5 +1,9 @@
 # Changelog
 
+## 20261110-1543
+
+- Used the CUDA half2 raw representation for bit-preserving lane conversion on CUDA 12 compilers.
+
 ## 20261110-1535
 
 - Added exact FP32 handling for the Q2 weight-stationary integer half-lanes on pre-sm_53 CUDA targets, retaining newer devices' PTX.
