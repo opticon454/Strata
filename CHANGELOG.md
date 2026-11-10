@@ -1,5 +1,10 @@
 # Changelog
 
+## 20261110-1528
+
+- Aligned the experimental runtime capability floor with its existing sm_52 build support while retaining the normal release floor.
+- Included the real device memory self-check in the Maxwell qualification preset.
+
 ## 20261110-1519
 
 - Added an opt-in bounded GPU arithmetic parity check for experimental Maxwell builds without model loads or timing loops.
