@@ -40,6 +40,17 @@
       }
     },
     {
+      "name": "cuda-maxwell",
+      "displayName": "Experimental Maxwell CUDA 12 build and correctness check",
+      "description": "Opt-in sm_52 build using a CUDA 12.x compiler. The parity test needs a real GPU; compiling does not establish hardware compatibility.",
+      "inherits": "cuda-compile",
+      "cacheVariables": {
+        "STRATA_EXPERIMENTAL_SM60": "ON",
+        "CMAKE_CUDA_ARCHITECTURES": "52",
+        "STRATA_BUILD_TESTS": "ON"
+      }
+    },
+    {
       "name": "hip-compile",
       "displayName": "HIP compile-only (the release flags of packaging/build_hip_linux.sh, no tests)",
       "description": "Builds the strata target for gfx1100 and gfx1201 with ROCm's hipcc. ggml is the vendored third_party/strata-ggml (-DSTRATA_GGML_DIR=<llama.cpp checkout> overrides it); if hipcc is not on PATH pass -DCMAKE_HIP_COMPILER=<rocm>/llvm/bin/clang++.",
@@ -60,9 +71,17 @@
     { "name": "cpu-check", "configurePreset": "cpu-check", "jobs": 0 },
     { "name": "cpu-check-native", "configurePreset": "cpu-check-native", "jobs": 0 },
     { "name": "cuda-compile", "configurePreset": "cuda-compile", "targets": ["strata", "strata_kq"], "jobs": 0 },
+    { "name": "cuda-maxwell", "configurePreset": "cuda-maxwell", "targets": ["strata", "strata_kq", "strata-device", "maxwell_math_parity"], "jobs": 2 },
     { "name": "hip-compile", "configurePreset": "hip-compile", "targets": ["strata"], "jobs": 0 }
   ],
   "testPresets": [
+    {
+      "name": "cuda-maxwell",
+      "configurePreset": "cuda-maxwell",
+      "output": { "outputOnFailure": true },
+      "filter": { "include": { "name": "^(maxwell_math_parity|cuda_device_selftest)$" } },
+      "execution": { "timeout": 30, "noTestsAction": "error", "jobs": 1 }
+    },
     {
       "name": "cpu-check",
       "configurePreset": "cpu-check",

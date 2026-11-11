@@ -83,6 +83,13 @@ macro(strata_cuda_toolchain)
   set(_strata_gpu_runtime_target CUDA::cudart)
   set(_strata_gpu_blas_target CUDA::cublas)
   set(_strata_gpu_include_directories ${CMAKE_CUDA_TOOLKIT_INCLUDE_DIRECTORIES})
+  if(STRATA_BUILD_TESTS AND STRATA_EXPERIMENTAL_SM60 AND NOT STRATA_HIP_GFX906)
+    add_executable(maxwell_math_parity tests/cuda/Test-Maxwell.cu)
+    target_include_directories(maxwell_math_parity PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
+    target_link_libraries(maxwell_math_parity PRIVATE CUDA::cudart)
+    add_test(NAME maxwell_math_parity COMMAND maxwell_math_parity)
+    set_tests_properties(maxwell_math_parity PROPERTIES SKIP_RETURN_CODE 77 TIMEOUT 30 LABELS "gpu;cuda;maxwell")
+  endif()
 endmacro()
 
 # strata_mmq, strata_mmq_w4a4 and libstrata_kq: llama.cpp's MMQ kernels for the prompt path (CUDA), and their tests
