@@ -1,5 +1,9 @@
 # Changelog
 
+## 20261111-0900
+
+- The `cuda-maxwell` build preset now builds `strata-device`, which its device self-test needs; before this `ctest --preset cuda-maxwell` reported `cuda_device_selftest` as Not Run.
+
 ## 20261110-1543
 
 - Used the CUDA half2 raw representation for bit-preserving lane conversion on CUDA 12 compilers.

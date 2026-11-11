@@ -71,7 +71,7 @@
     { "name": "cpu-check", "configurePreset": "cpu-check", "jobs": 0 },
     { "name": "cpu-check-native", "configurePreset": "cpu-check-native", "jobs": 0 },
     { "name": "cuda-compile", "configurePreset": "cuda-compile", "targets": ["strata", "strata_kq"], "jobs": 0 },
-    { "name": "cuda-maxwell", "configurePreset": "cuda-maxwell", "targets": ["strata", "strata_kq", "maxwell_math_parity"], "jobs": 2 },
+    { "name": "cuda-maxwell", "configurePreset": "cuda-maxwell", "targets": ["strata", "strata_kq", "strata-device", "maxwell_math_parity"], "jobs": 2 },
     { "name": "hip-compile", "configurePreset": "hip-compile", "targets": ["strata"], "jobs": 0 }
   ],
   "testPresets": [
