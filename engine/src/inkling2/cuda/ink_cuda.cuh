@@ -9,6 +9,14 @@
 
 #include <cuda_bf16.h>
 #include <cuda_fp16.h>
+
+// Maxwell (sm_52) has no fp16 arithmetic, so cuda_fp16.h does not declare __hfma2 there: do the fused multiply-add per lane in fp32 and round once
+#if defined(__CUDA_ARCH__) && __CUDA_ARCH__ < 530
+__device__ __forceinline__ __half2 __hfma2(const __half2 a, const __half2 b, const __half2 c) {
+    const float2 fa = __half22float2(a), fb = __half22float2(b), fc = __half22float2(c);
+    return __floats2half2_rn(fmaf(fa.x, fb.x, fc.x), fmaf(fa.y, fb.y, fc.y));
+}
+#endif
 #include <cuda_fp8.h>
 #if defined(CUDART_VERSION) && (CUDART_VERSION >= 12080)
 #include <cuda_fp4.h>
